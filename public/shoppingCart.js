@@ -5,9 +5,9 @@ const shoppingCart = {
     <h1>Shopping Cart<h1>
     <form class="form">
     <section class = "input">
-    <input ng-model = $ctrl.newItem.product" placeholder = "Product"></input>
-    <input ng-model = $ctrl.newItem.price" placeholder = "Price"></input>
-    <input ng-model = $ctrl.newItem.quantity" placeholder = "Quantity"></input>
+    <input ng-model = "$ctrl.newItem.product" placeholder = "Product"></input>
+    <input ng-model = "$ctrl.newItem.price" placeholder = "Price"></input>
+    <input ng-model = "$ctrl.newItem.quantity" placeholder = "Quantity"></input>
     <button ng-click = "$ctrl.addItem($ctrl.newItem)">Add Item</button>
     </section>
     </form>
@@ -15,9 +15,9 @@ const shoppingCart = {
     <section class = "cart">
     <secion class = "list-items" ng-repeat = "cartItems in $ctrl.shoppingList | orderBy: 'id' ">
     <section class = "items">
-    <p>Products: {{$ctrl.products}}</p>
-    <p>Price: {{$ctrl.price | currency}}</p>
-    <p>Quantity: {{$ctrl.quantity}}</p>
+    <p>Products: {{cartItems.products}}</p>
+    <p>Price: {{cartItems.price | currency}}</p>
+    <p>Quantity: {{cartItems.quantity}}</p>
     <button ng-click = "$ctrl.removeItems(cartItems.id)">X</button>
     <button ng-click = "$ctrl.updateItems(cartItems.id, $ctrl.newItem.quantity)">Update Quantity</button>
     </section>
@@ -26,21 +26,26 @@ const shoppingCart = {
     controller: ['shoppingCartService', function(shoppingCartService){
         const vm = this;
 
+        vm.getAllItems = () => {
         shoppingCartService.getAllItems().then((response) => {
             vm.shoppingList = response;
         });
-
-        vm.addItems.addItems(item).then((response) => {
+    }
+        vm.addItems = (item) => {
+        shoppingCartService.addItems(item).then((response) => {
             vm.shoppingList = response;
-        });
-
+        })
+    }
+        vm.updateItems = (id, quantity) => {
         vm.updateItems.updateItems(id, quantity).then((response) => {
             vm.shoppingList = response;
         });
-        
+    }
+        vm.removeItems = (item) => {  
         vm.removeItems.deleteItems(item).then((response) => {
             vm.shoppingList = response;
         });
+    }
     }]
 }
 

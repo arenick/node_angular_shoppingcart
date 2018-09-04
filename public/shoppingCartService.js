@@ -5,16 +5,17 @@ function shoppingCartService ($http) {
 
     vm.getAllItems = () => {
         return $http ({
-            url: '/shopping-cart',
+            url: '/list/all',
             method: 'GET'
         }).then((response) => {
             vm.cart = response.data;
-            return vm.shoppingCart;
+            return vm.cart;
         })
     }
     vm.addItems = (item) => {
+        console.log(item);
         return $http ({
-            url: '/shopping-cart',
+            url: '/list/all',
             method: 'POST',
             data: {
                 product: item.product,
@@ -22,12 +23,14 @@ function shoppingCartService ($http) {
                 quantity: item.product
             }
         }).then((response) => {
+            vm.cart = response.data;
+            console.log(item.price);
             return response.data;
         })
     }
     vm.updateItems = (id, quantity) => {
         return $http ({
-            url: '/shopping-cart',
+            url: '/list/:id',
             method: 'PUT'
         }).then((response) => {
             vm.cart = response.data;
@@ -36,7 +39,7 @@ function shoppingCartService ($http) {
     }
     vm.deleteItems = (item) => {
         return $http ({
-            url: '/shopping-cart',
+            url: '/list/:id',
             method: 'DELETE'
         }.then((results) => {
             vm.cart = response.data;
